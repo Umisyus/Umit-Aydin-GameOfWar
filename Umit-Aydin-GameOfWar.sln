@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umit-Aydin-GameOfWar", "Umit-Aydin-GameOfWar.csproj", "{1709FFE6-1154-4487-917C-2FFD64D3F28C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1709FFE6-1154-4487-917C-2FFD64D3F28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1709FFE6-1154-4487-917C-2FFD64D3F28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1709FFE6-1154-4487-917C-2FFD64D3F28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1709FFE6-1154-4487-917C-2FFD64D3F28C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
