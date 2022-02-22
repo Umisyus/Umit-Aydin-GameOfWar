@@ -50,11 +50,11 @@ namespace Umit_Aydin_GameOfWar
             }
         };
 
-        public string Rank { get; }
+        public int Rank { get; }
         public char Suit { get; }
 
 
-        public Card(char suit, string rank)
+        public Card(char suit, int rank)
         {
             Suit = suit;
             Rank = rank;

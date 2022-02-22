@@ -34,7 +34,7 @@ namespace Umit_Aydin_GameOfWar
                     for (int rank = 1; rank < 14; rank++)
                     {
                         // Add the card
-                        cards[i] = new Card(suit, rank.ToString());
+                        cards[i] = new Card(suit, rank);
 
                         // Stop on the 53rd card
                         if (i == 52)

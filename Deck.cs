@@ -1,10 +1,26 @@
-﻿namespace Umit_Aydin_GameOfWar
+﻿using System;
+
+namespace Umit_Aydin_GameOfWar
 {
     public class Deck
     {
         public static Card[] ShuffleCards(Card[] completedCards)
         {
-            return null;
+            int rng = new Random().Next(1, completedCards.Length);
+
+            var shuffledCards = new Card[] { };
+
+            for (int i = 0; i < completedCards.Length; i++)
+            {
+                var a = completedCards[rng];
+                completedCards[rng] = completedCards[i];
+                completedCards[rng] = completedCards[i];
+
+                completedCards[i] = a;
+                shuffledCards = completedCards;
+            }
+
+            return shuffledCards;
         }
 
         public Deck()
@@ -26,7 +42,7 @@
                     for (int rank = 1; rank < 14; rank++)
                     {
                         // Add the card
-                        cards[i] = new Card(suit, rank.ToString());
+                        cards[i] = new Card(suit, rank);
 
                         // Stop on the 53rd card
                         if (i == 52)
@@ -43,6 +59,6 @@
             return cards;
         }
 
-        public static Card[] CompletedCards { get; set; }
+        public Card[] CompletedCards { get; set; }
     }
 }
