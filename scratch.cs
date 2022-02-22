@@ -19,7 +19,7 @@ namespace Umit_Aydin_GameOfWar
                 Console.WriteLine(card.ToString());
             }
         }
-
+        
         private static Card[] GenerateCards()
         {
             var cards = new Card[53];

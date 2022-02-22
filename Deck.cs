@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Umit_Aydin_GameOfWar
+﻿namespace Umit_Aydin_GameOfWar
 {
     public class Deck
     {

@@ -30,8 +30,25 @@ namespace Umit_Aydin_GameOfWar
 
             while (gameHasTurn)
             {
+                
+                
+                
+                
+                
+                // draw one card from each player's deck.
+
+                // compare
+                // p1's card: p2's card:
+                // x     >    y ? true (p1 wins) : false (p2 wins)
+                // if p1's card == p2's card
+                // declare war:
+                // draw 4 cards
+                // (draw and compare four times)
+                
                 CompareCards(player1Deck, player2Deck, player1, player2);
+
             }
+      
         }
 
         private static Card[][] SplitDeck(Card[] gameDeck)
@@ -71,7 +88,7 @@ namespace Umit_Aydin_GameOfWar
                 Console.WriteLine($"{player1} draws {player1Card}. {player2} draws {player2Card} ");
                 if (player1Card == player2Card)
                 {
-                    Console.WriteLine(">>>> WAR! <<<<");
+                    Console.WriteLine(">>>> W̳A̳R̳! <<<<");
                 }
             }
         }
