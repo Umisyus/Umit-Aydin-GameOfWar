@@ -11,10 +11,10 @@ namespace Umit_Aydin_GameOfWar
 
             Console.WriteLine("Welcome to War!");
             Deck deck = new Deck();
-            
+
             Card[] gameDeck = Deck.CompletedCards;
             var shuffled = Deck.ShuffleCards(gameDeck);
-            
+
             Card[] player1Deck = { };
             Card[] player2Deck = { };
 
@@ -36,29 +36,32 @@ namespace Umit_Aydin_GameOfWar
 
         private static Card[][] SplitDeck(Card[] gameDeck)
         {
-            Card[] gameDeckpt1 = new Card[] { };
-            Card[] gameDeckpt2 = new Card[] { };
+            Card[] gameDeckpt1 = null;
+            Card[] gameDeckpt2 = null;
 
             // Split deck among players
 
             if (gameDeck.Length % 2 == 0)
-                for (var index = 0; index < (gameDeck.Length / 2); index++)
+            {
+                var gameDeckLength = (gameDeck.Length / 2);
+
+                for (var index = 0; index < gameDeckLength; index++)
                 {
                     var card = gameDeck[index];
+                    gameDeckpt1 = new Card[gameDeckLength];
                     gameDeckpt1[index] = card;
+
+                    gameDeckpt2 = new Card[gameDeckLength];
+                    gameDeckpt2[index] = card;
                 }
 
-            for (var index = 25; index < (gameDeck.Length / 2); index++)
-            {
-                var card = gameDeck[index];
-                gameDeckpt2[index] = card;
+                return new Card[][]
+                {
+                    gameDeckpt1, gameDeckpt2
+                };
             }
 
-
-            return new Card[][]
-            {
-                gameDeckpt1, gameDeckpt2
-            };
+            return new Card[][] { };
         }
 
         private static void CompareCards(Card[] player1Deck, Card[] player2Deck, Player player1, Player player2)
