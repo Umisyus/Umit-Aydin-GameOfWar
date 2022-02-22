@@ -5,7 +5,7 @@ namespace Umit_Aydin_GameOfWar
 {
     internal static class Program
     {
-        private static void Main2()
+        private static void Main()
         {
             var rng = new Random().Next(1, 52);
 
