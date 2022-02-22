@@ -5,34 +5,65 @@ namespace Umit_Aydin_GameOfWar
 {
     internal static class Program
     {
-        private static void Main()
+        private static void Main2()
         {
-            var rng = new Random().Next(1, 50);
+            var rng = new Random().Next(1, 52);
 
             Console.WriteLine("Welcome to War!");
-            Deck.Card[] gameDeck = Deck.CompletedCards;
-            Deck.Card[] player1Deck = { };
-            Deck.Card[] player2Deck = { };
+            Deck deck = new Deck();
+            
+            Card[] gameDeck = Deck.CompletedCards;
+            var shuffled = Deck.ShuffleCards(gameDeck);
+            
+            Card[] player1Deck = { };
+            Card[] player2Deck = { };
 
-            var shuffled = ShuffleArray(Deck.CompletedCards);
+            bool gameHasTurn = true;
 
-            for (var index = 0; index < (gameDeck.Length / 2); index++)
+
+            var player1 = new Player();
+            var player2 = new Player();
+
+            var split = SplitDeck(shuffled);
+            player1Deck = split[0];
+            player2Deck = split[1];
+
+            while (gameHasTurn)
+            {
+                CompareCards(player1Deck, player2Deck, player1, player2);
+            }
+        }
+
+        private static Card[][] SplitDeck(Card[] gameDeck)
+        {
+            Card[] gameDeckpt1 = new Card[] { };
+            Card[] gameDeckpt2 = new Card[] { };
+
+            // Split deck among players
+
+            if (gameDeck.Length % 2 == 0)
+                for (var index = 0; index < (gameDeck.Length / 2); index++)
+                {
+                    var card = gameDeck[index];
+                    gameDeckpt1[index] = card;
+                }
+
+            for (var index = 25; index < (gameDeck.Length / 2); index++)
             {
                 var card = gameDeck[index];
-                player1Deck[index] = card;
-
-                for (int i = 25; i < gameDeck.Length; i++)
-                {
-                    var card2 = gameDeck[index]; 
-                    player1Deck[i] = card2;
-                }
+                gameDeckpt2[index] = card;
             }
 
-            var player1 = new Player("Player 1", player1Deck);
-            var player2 = new Player("Player 2", player2Deck);
 
+            return new Card[][]
+            {
+                gameDeckpt1, gameDeckpt2
+            };
+        }
+
+        private static void CompareCards(Card[] player1Deck, Card[] player2Deck, Player player1, Player player2)
+        {
             // Compare cards, if same declare "WAR"
-
             for (int i = 0; i < 3; i++)
             {
                 var player1Card = player1Deck[i];
