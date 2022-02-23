@@ -23,12 +23,11 @@ namespace Umit_Aydin_GameOfWar
             Card[] player1Deck = { };
             Card[] player2Deck = { };
 
-            var shuffled = Deck.ShuffleCards(gameDeck);
+            var shuffled = deck.ShuffleCards(gameDeck);
             bool gameHasTurn = true;
 
             var player1 = new Player();
             var player2 = new Player();
-
 
             var split = SplitDeck(shuffled);
 
