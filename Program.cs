@@ -37,6 +37,8 @@ namespace Umit_Aydin_GameOfWar
                 var player1Card = player1Deck[player1Deck.Length - 1];
                 var player2Card = player1Deck[player2Deck.Length - 1];
 
+                Print(player1, player2, player1Card, player2Card);
+
                 // compare
                 // p1's card: p2's card:
                 // x     >    y ? true (p1 wins) : false (p2 wins)
@@ -52,9 +54,13 @@ namespace Umit_Aydin_GameOfWar
             }
         }
 
+        private static void Print(Player player1, Player player2, Card card1, Card card2)
+        {
+            Console.WriteLine($@" Player {player1} draws {card1} Player {player2} draws {card2}");
+        }
+
         private static void DetermineWinner(Card player1Card, Card player2Card, ref int player1Score,
-            Card[] player1Deck,
-            Card[] player2Deck, Player player1, Player player2, ref int player2Score)
+            Card[] player1Deck, Card[] player2Deck, Player player1, Player player2, ref int player2Score)
         {
             var isGreaterThan = player1Card.Rank > player2Card.Rank;
             var isEqual = player1Card.Rank == player2Card.Rank;
@@ -77,33 +83,48 @@ namespace Umit_Aydin_GameOfWar
 
         private static Card[][] SplitDeck(Card[] gameDeck)
         {
-            Card[] gameDeckpt1 = new Card[25];
-            Card[] gameDeckpt2 = new Card[25];
+            Card[] gameDeckpt1 = null;
+            Card[] gameDeckpt2 = null;
 
+            gameDeckpt1 = gameDeck[1..3];
+            
             // Split deck among players
 
-            if (gameDeck.Length % 2 == 0) // Even
-                for (var index = 0; index < (gameDeck.Length / 2); index++)
+            // Start from 0 to 25 of gameDeck
+            if (gameDeck.Length % 2 == 0)
+            {
+                var gameDeckLengthHalf = (gameDeck.Length / 2);
+                gameDeckpt1 = new Card[gameDeckLengthHalf];
+                gameDeckpt2 = new Card[gameDeckLengthHalf];
+
+                for (var index = 0; index < gameDeckLengthHalf; index++)
                 {
                     var card = gameDeck[index];
+
                     gameDeckpt1[index] = card;
                 }
-            else
-            {
-                var len = (gameDeck.Length - 1); // Odd
 
-                for (var index = len / 2; index < len; index++)
+                // Continue from (gameDeckLength /2) = 26 onwards to end of array
+                int i = 0;
+
+                for (var index2 = gameDeckLengthHalf; index2 < gameDeck.Length; index2--)
                 {
-                    var card = gameDeck[index];
-                    gameDeckpt2[index] = card;
+                    var card = gameDeck[index2];
+
+                    gameDeckpt2[i] = card;
+
+                    i++;
+
+                    if (i == gameDeckLengthHalf)
+                    {
+                        break;
+                    }
                 }
+
+                return new Card[][] {gameDeckpt1, gameDeckpt2};
             }
 
-
-            return new Card[][]
-            {
-                gameDeckpt1, gameDeckpt2
-            };
+            return new Card[][] { };
         }
 
         private static void CompareCards(Card[] player1Deck, Card[] player2Deck, Player player1, Player player2)

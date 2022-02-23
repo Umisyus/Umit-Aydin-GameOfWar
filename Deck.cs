@@ -30,7 +30,7 @@ namespace Umit_Aydin_GameOfWar
 
         private static Card[] GenerateCards()
         {
-            var cards = new Card[53];
+            var cards = new Card[52];
             var geAllSuits = Card.Suits.GeAllSuits();
 
             for (int i = 0; i < 13;)
@@ -44,8 +44,8 @@ namespace Umit_Aydin_GameOfWar
                         // Add the card
                         cards[i] = new Card(suit, rank);
 
-                        // Stop on the 53rd card
-                        if (i == 52)
+                        // Stop on the 52nd card
+                        if (i == 51)
                         {
                             break;
                         }
