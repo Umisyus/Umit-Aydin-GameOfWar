@@ -97,9 +97,11 @@ namespace Umit_Aydin_GameOfWar
             return val;
         }
 
-        public static Card DrawCard()
+        public static Card DrawCard(Card[] cards)
         {
-            return null;
+            var card = cards[CURRENT_INDEX];
+            CURRENT_INDEX++;
+            return card;
         }
 
         private static Card[][] SplitDeck(Card[] gameDeck)
