@@ -84,7 +84,8 @@ namespace Umit_Aydin_GameOfWar
         {
             Console.WriteLine("The game has ended...");
             Console.WriteLine($@"
-The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
+The final score was: 
+Player 1: {player1.Score}        Player 2: {player2.Score}
 ");
 
             // Insert cheecky comment here...
@@ -128,7 +129,8 @@ The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
 
         private static void PrintGameState(Player player1, Player player2, Card card1, Card card2)
         {
-            Console.WriteLine($@" 
+            Console.WriteLine($@"
+Round: {CURRENT_INDEX}
 {player1} Score: {player1.Score}        {player2} Score: {player2.Score}
 {player1} draws {card1}, {player2} draws {card2}");
         }
@@ -166,44 +168,52 @@ The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
         private static void War(Player p1, Player p2)
         {
             // Compare cards, if same declare "WAR", draw and compare FOUR cards!
-            int[] wins = new int[4];
 
+            var previousScorePlayer1 = player1.Score;
+            var previousScorePlayer2 = player2.Score;
 
-            try
+            for (int warCard = 0; warCard < 3; warCard++)
             {
-                var previousScorePlayer1 = player1.Score;
-                var previousScorePlayer2 = player2.Score;
+                // Take from the array
+                // player1Deck.Tak(player1Card);
+                // Compare cards recursively but do not call war again
 
+                Card p1WarCard = p1.Cards[CURRENT_INDEX];
+                Card p2WarCard = p2.Cards[CURRENT_INDEX];
 
-                for (int warCard = 0; warCard < 3; warCard++)
-                {
-                    // Take from the array
-                    // player1Deck.Tak(player1Card);
-                    // Compare cards recursively but do not call war again
+                IncrementCardIndex();
 
-                    Card p1WarCard = p1.Cards[CURRENT_INDEX];
-                    Card p2WarCard = p2.Cards[CURRENT_INDEX];
-
-                    wins[warCard] = DetermineWinner(p1, p2);
-
-                    IncrementCardIndex();
-
-                    // Print war results
-                    PrintGameState(p1, p2, p1WarCard, p2WarCard);
-                }
-
-                var victor = player1.Score > player2.Score;
-
-                var resultOfWar = victor
-                    ? $"{player1} wins {player1.Score - previousScorePlayer1} points"
-                    : $"{player2} wins {player2.Score - previousScorePlayer2} points";
-
-                Console.WriteLine(resultOfWar);
+                // Print war results
+                PrintGameState(p1, p2, p1WarCard, p2WarCard);
             }
-            catch (Exception)
+
+            // Print some meaningful dialogue/messages
+
+            var resultOfWar = ResultOfWar(previousScorePlayer1, previousScorePlayer2);
+
+            Console.WriteLine(resultOfWar);
+        }
+
+        private static string ResultOfWar(int previousScorePlayer1, int previousScorePlayer2)
+        {
+            var victor = player1.Score > player2.Score;
+
+            string resultOfWar = "";
+
+            if (player1.Score == previousScorePlayer1 && player2.Score == previousScorePlayer2)
             {
-                // ignored
+                resultOfWar = "War ended in a tie.";
+                return resultOfWar;
             }
+
+            if (victor)
+                resultOfWar = $"{player1} wins {player1.Score - previousScorePlayer1} points ";
+
+            if (!victor)
+                resultOfWar = $"{player2} wins {player2.Score - previousScorePlayer2} points ";
+
+
+            return resultOfWar;
         }
     }
 }
