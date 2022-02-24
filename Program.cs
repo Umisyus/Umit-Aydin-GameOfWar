@@ -5,48 +5,48 @@ namespace Umit_Aydin_GameOfWar
 {
     internal static class Program
     {
-        static int _player1Score = 0, _player2Score = 0;
-
         private static int CURRENT_INDEX = 0;
+        private static Player player1;
+        private static Player player2;
 
         private static void Main()
         {
             // Output unicode
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            var rng = new Random().Next(1, 52);
+            Console.Clear();
 
             Console.WriteLine("Welcome to War!");
+            Console.WriteLine("To play, please press <ENTER> ({U+23CE})");
             Deck deck = new Deck();
             var gameDeck = deck.CompletedCards;
 
-            Card[] player1Deck = { };
-            Card[] player2Deck = { };
 
             var shuffled = deck.ShuffleCards(gameDeck);
             bool gameHasTurn = true;
 
-            var player1 = new Player();
-            var player2 = new Player();
+            player1 = new Player("Player 1");
+            player2 = new Player("Player 2");
 
-            var split = SplitDeck(shuffled);
+            var split = deck.SplitDeck(shuffled);
 
-            player1Deck = split[0];
-
-            player2Deck = split[1];
+            player1.Cards = split[0];
+            player2.Cards = split[1];
 
             while (Console.ReadLine() == String.Empty)
             {
                 // draw one card from each player's deck.
-                var player1Card = player1Deck[^1];
-                var player2Card = player1Deck[^1];
+                var player1Card = player1.Cards[CURRENT_INDEX];
+                var player2Card = player2.Cards[CURRENT_INDEX];
 
-                Print(player1, player2, player1Card, player2Card);
+                IncrementCardIndex();
+
+                PrintGameState(player1, player2, player1Card, player2Card);
 
                 // compare
                 // p1's card: p2's card:
                 // x     >    y ? true (p1 wins) : false (p2 wins)
-                int result = DetermineWinner(player1Card, player2Card, ref _player1Score, ref _player2Score);
+                int result = DetermineWinner(player1, player2);
 
                 // Compare cards, if same declare "WAR"
 
@@ -57,33 +57,91 @@ namespace Umit_Aydin_GameOfWar
                 if (result == 3)
                 {
                     Console.WriteLine(">>>> W̳A̳R̳! <<<<");
-                    War(player1Deck, player2Deck);
+
+                    War(player1, player2);
                 }
             }
         }
 
-        private static void Print(Player player1, Player player2, Card card1, Card card2)
+        private static void IncrementCardIndex()
         {
-            Console.WriteLine($@" Player {player1} draws {card1} Player {player2} draws {card2}");
+            if (CURRENT_INDEX != 25)
+                CURRENT_INDEX++;
+            else
+                AskReplay(player1, player2);
+        }
+
+        private static void AskReplay(Player player1, Player player2)
+        {
+            Console.WriteLine("The game has ended...");
+            Console.WriteLine($@"
+The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
+");
+
+            // Insert cheecky comment here...
+            if (player1.Score > player2.Score)
+            {
+                Console.WriteLine($"It seems that {player1} got the best of you...\nPlayer {player1}," +
+                                  "better luck next time!");
+            }
+            else
+                Console.WriteLine($"It seems that {player2} got the best of you...");
+
+            Console.WriteLine("Would you like to play again?");
+            Console.Write("> ");
+            // Restart game if answer 'y'
+
+            while (true)
+            {
+                var ans = Console.ReadKey().KeyChar;
+
+                if (ans == 'y')
+                {
+                    RestartGame();
+                    break;
+                }
+
+                if (ans == 'n')
+                {
+                    Console.WriteLine("Goodbye!");
+                    Environment.Exit(0);
+                }
+            }
+        }
+
+        private static void RestartGame()
+        {
+            player1 = new Player("1");
+            player2 = new Player("2");
+            CURRENT_INDEX = 0;
+            Main();
+        }
+
+        private static void PrintGameState(Player player1, Player player2, Card card1, Card card2)
+        {
+            Console.WriteLine($@" 
+{player1} Score: {player1.Score}        {player2} Score: {player2.Score}
+{player1} draws {card1}, {player2} draws {card2}");
         }
 
         private static int DetermineWinner(
-            Card player1Card, Card player2Card,
-            ref int player1Score,
-            ref int player2Score)
+            Player p1, Player p2)
         {
-            var isGreaterThan = player1Card.Rank > player2Card.Rank;
-            var isEqual = player1Card.Rank == player2Card.Rank;
+            var p1Card = p1.Cards[CURRENT_INDEX].Rank;
+            var p2Card = p2.Cards[CURRENT_INDEX].Rank;
+            var isGreaterThan = p1Card > p2Card;
+
+            var isEqual = p1Card == p2Card;
             int val;
 
             if (isGreaterThan)
             {
-                player1Score++;
+                p1.Score++;
                 val = 1;
             }
             else
             {
-                player2Score++;
+                p2.Score++;
                 val = 2;
             }
 
@@ -96,50 +154,25 @@ namespace Umit_Aydin_GameOfWar
             return val;
         }
 
-        public static Card DrawCard(Card[] cards)
-        {
-            var card = cards[CURRENT_INDEX];
-            CURRENT_INDEX++;
-            return card;
-        }
-
-        private static Card[][] SplitDeck(Card[] gameDeck)
-        {
-            // Split deck among players
-
-            if (gameDeck.Length % 2 == 0)
-            {
-                // Get half of array length
-                var gameDeckLength = gameDeck.Length / 2;
-                // Get cards/elements from the start up to the half of the array 
-                var gameDeckPart1 = gameDeck[..gameDeckLength];
-                // Proceed to get the cards/elements from the half of the array to the length of the array
-                var gameDeckPart2 = gameDeck[(gameDeckLength / 2)..gameDeckLength];
-
-                // return our split array as one
-                return new[] {gameDeckPart1, gameDeckPart2};
-            }
-
-            // Return empty
-            return new Card[][] { };
-        }
-
-        private static void War(Card[] player1Deck, Card[] player2Deck)
+        private static void War(Player p1, Player p2)
         {
             // Compare cards, if same declare "WAR", draw and compare FOUR cards!
             for (int warCard = 0; warCard < 3; warCard++)
             {
-                Card player1Card;
-                Card player2Card;
-
                 try
                 {
-                    player1Card = player1Deck[warCard];
-                    player2Card = player2Deck[warCard];
                     // Take from the array
                     // player1Deck.Tak(player1Card);
                     // Compare cards recursively but do not call war again
-                    DetermineWinner(player1Card, player2Card, ref _player1Score, ref _player2Score);
+
+                    Card p1WarCard = p1.Cards[CURRENT_INDEX];
+                    Card p2WarCard = p2.Cards[CURRENT_INDEX];
+
+                    DetermineWinner(p1, p2);
+                    IncrementCardIndex();
+
+                    // Print war results
+                    PrintGameState(p1, p2, p1WarCard, p2WarCard);
                 }
                 catch (Exception)
                 {
