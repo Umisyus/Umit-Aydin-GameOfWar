@@ -17,13 +17,15 @@ namespace Umit_Aydin_GameOfWar
             Console.Clear();
 
             Console.WriteLine("Welcome to War!");
-            Console.WriteLine("To play, please press <ENTER> ({U+23CE})");
+            var playPleasePressEnter = "To play, please press <ENTER> \u23CE!";
+
+            Console.WriteLine(playPleasePressEnter);
+
+            // Initialize game elements
             Deck deck = new Deck();
             var gameDeck = deck.CompletedCards;
 
-
             var shuffled = deck.ShuffleCards(gameDeck);
-            bool gameHasTurn = true;
 
             player1 = new Player("Player 1");
             player2 = new Player("Player 2");
@@ -33,6 +35,7 @@ namespace Umit_Aydin_GameOfWar
             player1.Cards = split[0];
             player2.Cards = split[1];
 
+            // Game loop
             while (Console.ReadLine() == String.Empty)
             {
                 // draw one card from each player's deck.
@@ -60,6 +63,8 @@ namespace Umit_Aydin_GameOfWar
 
                     War(player1, player2);
                 }
+
+                Console.WriteLine("To continue please press <ENTER> \u23CE...");
             }
         }
 
