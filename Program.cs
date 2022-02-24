@@ -16,7 +16,11 @@ namespace Umit_Aydin_GameOfWar
 
             Console.Clear();
 
-            Console.WriteLine("Welcome to War!");
+            Console.WriteLine(@"
+*******************************
+| Welcome to the game of WAR! |
+*******************************
+");
             var playPleasePressEnter = "To play, please press <ENTER> \u23CE!";
 
             Console.WriteLine(playPleasePressEnter);
