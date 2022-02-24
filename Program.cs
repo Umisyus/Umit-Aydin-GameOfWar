@@ -162,9 +162,16 @@ The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
         private static void War(Player p1, Player p2)
         {
             // Compare cards, if same declare "WAR", draw and compare FOUR cards!
-            for (int warCard = 0; warCard < 3; warCard++)
+            int[] wins = new int[4];
+
+
+            try
             {
-                try
+                var previousScorePlayer1 = player1.Score;
+                var previousScorePlayer2 = player2.Score;
+
+
+                for (int warCard = 0; warCard < 3; warCard++)
                 {
                     // Take from the array
                     // player1Deck.Tak(player1Card);
@@ -173,16 +180,25 @@ The final score was: Player 1: {player1.Score} Player 2: {player2.Score}
                     Card p1WarCard = p1.Cards[CURRENT_INDEX];
                     Card p2WarCard = p2.Cards[CURRENT_INDEX];
 
-                    DetermineWinner(p1, p2);
+                    wins[warCard] = DetermineWinner(p1, p2);
+
                     IncrementCardIndex();
 
                     // Print war results
                     PrintGameState(p1, p2, p1WarCard, p2WarCard);
                 }
-                catch (Exception)
-                {
-                    // ignored
-                }
+
+                var victor = player1.Score > player2.Score;
+
+                var resultOfWar = victor
+                    ? $"{player1} wins {player1.Score - previousScorePlayer1} points"
+                    : $"{player2} wins {player2.Score - previousScorePlayer2} points";
+
+                Console.WriteLine(resultOfWar);
+            }
+            catch (Exception)
+            {
+                // ignored
             }
         }
     }
