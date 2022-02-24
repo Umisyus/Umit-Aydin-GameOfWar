@@ -5,8 +5,6 @@ namespace Umit_Aydin_GameOfWar
 {
     class Foo
     {
-        static int random = new Random().Next(1, 10);
-
         public static void Main2()
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
@@ -14,9 +12,19 @@ namespace Umit_Aydin_GameOfWar
             Console.WriteLine("Hello!");
             var cards = GenerateCards();
 
-            foreach (var card in cards)
+            for (var index = 0; index < cards.Length; index++)
             {
+                var card = cards[index];
                 Console.WriteLine(card.ToString());
+
+                Console.WriteLine(new string('-', 10));
+
+                Console.WriteLine($"REMOVING {card}");
+                cards.Remove(index);
+                Console.WriteLine($"REMOVED {card}");
+
+                Console.WriteLine(new string('-', 10));
+                Console.WriteLine($"Item count in ARRAY: {cards.Length}");
             }
         }
 
@@ -34,7 +42,7 @@ namespace Umit_Aydin_GameOfWar
                     for (int rank = 1; rank < 14; rank++)
                     {
                         // Add the card
-                        cards[i] = new Card(suit, rank.ToString());
+                        cards[i] = new Card(suit, rank);
 
                         // Stop on the 53rd card
                         if (i == 52)
